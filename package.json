@@ -1,0 +1,14 @@
+{
+  "name": "lb-sys",
+  "version": "1.0.0",
+  "description": "A Living Library of Dangerous Books",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 3000",
+    "build": "echo 'No build process needed for static site'",
+    "start": "python3 -m http.server 3000"
+  },
+  "keywords": ["react", "library", "books"],
+  "author": "",
+  "license": "ISC"
+}

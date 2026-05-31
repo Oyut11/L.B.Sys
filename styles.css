@@ -1,0 +1,941 @@
+/* ============================================================
+   L.B.Sys — Living Book System
+   Revolutionary-print / agitprop visual system
+   ============================================================ */
+
+:root {
+  --paper: #e9dfc7;        /* warm newsprint */
+  --paper-2: #e0d4b6;      /* darker fold */
+  --paper-3: #d6c8a4;
+  --ink: #18130a;          /* warm near-black */
+  --ink-soft: #463d2c;
+  --ink-faint: #7a6f56;
+  --accent: #d6202b;       /* overridden per thinker */
+  --accent-ink: #18130a;
+  --max: 1280px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.9s var(--ease);
+}
+
+/* paper backdrop texture: layered gradients to fake fibre + ink unevenness */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(120% 80% at 15% -10%, rgba(255,250,235,0.55), transparent 60%),
+    radial-gradient(120% 90% at 100% 110%, rgba(120,100,60,0.18), transparent 55%);
+  mix-blend-mode: multiply;
+}
+
+/* fixed grain overlay (animated flicker) */
+.grain {
+  position: fixed; inset: -50%;
+  width: 200%; height: 200%;
+  pointer-events: none; z-index: 9000;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainShift 0.9s steps(4) infinite;
+  mix-blend-mode: multiply;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-3%, 2%); }
+  50%  { transform: translate(2%, -3%); }
+  75%  { transform: translate(-2%, -2%); }
+  100% { transform: translate(3%, 1%); }
+}
+
+.vignette {
+  position: fixed; inset: 0; pointer-events: none; z-index: 8999;
+  box-shadow: inset 0 0 220px rgba(24,19,10,0.28);
+}
+
+#root { position: relative; z-index: 1; }
+
+/* ---------- typography helpers ---------- */
+.display { font-family: "Bodoni Moda", Georgia, serif; font-weight: 900; line-height: 0.92; letter-spacing: -0.01em; }
+.mono { font-family: "Courier Prime", monospace; }
+.label {
+  font-family: "Courier Prime", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ============================================================
+   HERO / KINETIC INTRO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 6vw, 90px);
+  overflow: hidden;
+}
+.hero-rule {
+  display: flex; align-items: baseline; gap: 16px;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 10px;
+  flex-wrap: wrap;
+}
+.hero-sys {
+  font-family: "Courier Prime", monospace; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase; font-size: clamp(11px,1.4vw,15px);
+}
+.hero-meta { margin-left: auto; font-family:"Courier Prime",monospace; font-size: clamp(10px,1.2vw,13px); letter-spacing:0.18em; color: var(--ink-soft); text-transform: uppercase; }
+
+.hero-title {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(52px, 11vw, 188px);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  margin: clamp(20px,5vh,60px) 0 clamp(16px,3vh,30px);
+  text-transform: uppercase;
+}
+.hero-title .word { display: block; overflow: hidden; }
+.hero-title .word span {
+  display: inline-block;
+  transform: translateY(110%) rotate(6deg);
+  opacity: 0;
+  transition: transform 1s var(--ease), opacity 1s var(--ease);
+}
+.hero-title .word:nth-child(2) span { transition-delay: 0.12s; }
+.hero-title .word:nth-child(3) span { transition-delay: 0.24s; }
+.hero-title .em { color: var(--paper); -webkit-text-stroke: 2px var(--ink); }
+.hero-title .fill { position: relative; }
+.hero-title .fill::after {
+  content: ""; position: absolute; left: -2%; right: -2%; bottom: 8%; height: 40%;
+  background: var(--accent); z-index: -1; transform: scaleX(0); transform-origin: left;
+  mix-blend-mode: multiply;
+  transition: transform 0.9s var(--ease) 0.7s;
+}
+.hero.in .hero-title .word span { transform: translateY(0) rotate(0); opacity: 1; }
+.hero.in .hero-title .fill::after { transform: scaleX(1); }
+
+.hero-lede {
+  max-width: 760px; font-size: clamp(18px, 2.4vw, 27px);
+  line-height: 1.42; color: var(--ink-soft);
+  font-weight: 300;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 1s var(--ease) 1s, transform 1s var(--ease) 1s;
+}
+.hero-lede em { font-style: italic; color: var(--ink); }
+.hero.in .hero-lede { opacity: 1; transform: translateY(0); }
+
+.hero-foot {
+  display: flex; gap: 26px; align-items: center; flex-wrap: wrap;
+  margin-top: clamp(28px,5vh,56px);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 1s var(--ease) 1.25s, transform 1s var(--ease) 1.25s;
+}
+.hero.in .hero-foot { opacity: 1; transform: translateY(0); }
+.scroll-cue { display: flex; align-items: center; gap: 12px; font-family:"Courier Prime",monospace; letter-spacing: 0.2em; text-transform: uppercase; font-size: 12px; color: var(--ink-soft); }
+.scroll-cue .bar { width: 54px; height: 2px; background: var(--ink); transform-origin: left; animation: cueBar 2s var(--ease) infinite; }
+@keyframes cueBar { 0%,100%{transform: scaleX(0.3);} 50%{transform: scaleX(1);} }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+/* floating ghost words in hero bg */
+.hero-ghosts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: -1; }
+.ghost {
+  position: absolute; font-family: "Bodoni Moda", serif; font-style: italic;
+  color: var(--ink); opacity: 0.05; white-space: nowrap;
+  font-size: clamp(40px, 9vw, 140px); font-weight: 700;
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-40px); }
+}
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
+.gallery-wrap { padding: clamp(40px,7vw,120px) clamp(20px,5vw,80px) 140px; }
+.gallery-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+  border-bottom: 2px solid var(--ink); padding-bottom: 18px; margin-bottom: 8px;
+}
+.gallery-head h2 { font-family:"Bodoni Moda",serif; font-weight: 900; font-size: clamp(26px,4vw,52px); letter-spacing:-0.01em; }
+.gallery-head .count { font-family:"Courier Prime",monospace; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 22px 0 40px; }
+.filter-btn {
+  font-family:"Courier Prime",monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 7px 14px; border: 1.5px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all 0.25s var(--ease); border-radius: 0;
+}
+.filter-btn:hover { background: var(--ink); color: var(--paper); }
+.filter-btn.active { background: var(--ink); color: var(--paper); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0;
+  border-top: 1.5px solid var(--ink);
+  border-left: 1.5px solid var(--ink);
+}
+
+.card {
+  position: relative;
+  border-right: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  padding: 26px 24px 22px;
+  cursor: pointer;
+  background: var(--paper);
+  overflow: hidden;
+  min-height: 340px;
+  display: flex; flex-direction: column;
+  opacity: 0; transform: translateY(28px);
+}
+.card { transition: opacity 0.7s var(--ease), transform 0.7s var(--ease), background 0.4s var(--ease), color 0.4s var(--ease); }
+.card.in { opacity: 1; transform: translateY(0); }
+
+.card .card-accent {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+  background: var(--cardAccent); transform: scaleY(0); transform-origin: top;
+  transition: transform 0.45s var(--ease);
+}
+.card:hover { background: var(--cardAccent); color: var(--paper); z-index: 3; }
+.card:hover .card-accent { transform: scaleY(1); background: var(--ink); }
+.card:hover .card-num, .card:hover .card-meta, .card:hover .card-role { color: rgba(255,255,255,0.7); }
+.card:hover .card-portrait { filter: invert(1) contrast(1.1); }
+.card:hover .card-thesis { color: var(--paper); }
+.card:hover .card-enter { opacity: 1; transform: translateX(0); }
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.card-num { font-family:"Courier Prime",monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; color: var(--ink-faint); }
+.card-meta { font-family:"Courier Prime",monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); text-align: right; }
+
+.card-portrait { width: 86px; height: 86px; margin: 14px 0 8px; transition: filter 0.4s var(--ease); }
+
+.card-name { font-family:"Bodoni Moda",serif; font-weight: 900; font-size: clamp(24px,2.4vw,32px); line-height: 0.98; margin-top: auto; letter-spacing: -0.01em; }
+.card-role { font-family:"Courier Prime",monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-top: 6px; }
+.card-thesis { font-size: 15.5px; line-height: 1.36; margin-top: 12px; color: var(--ink-soft); font-style: italic; font-weight: 300;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card-work { display:flex; align-items: baseline; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid currentColor; }
+.card-work .t { font-family:"Bodoni Moda",serif; font-style: italic; font-size: 14px; flex: 1; }
+.card-work .y { font-family:"Courier Prime",monospace; font-size: 13px; font-weight: 700; }
+.card-enter { position: absolute; right: 18px; bottom: 18px; font-family:"Courier Prime",monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0; transform: translateX(-8px); transition: all 0.4s var(--ease); }
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+.profile {
+  position: fixed; inset: 0; z-index: 5000;
+  background: var(--paper);
+  overflow-y: auto; overflow-x: hidden;
+  transition: background 0.9s var(--ease);
+}
+.profile-inner { max-width: var(--max); margin: 0 auto; padding: 0 clamp(20px,5vw,72px) 160px; }
+
+/* sticky top bar */
+.p-bar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px clamp(20px,5vw,72px);
+  background: var(--paper);
+  border-bottom: 2px solid var(--ink);
+  max-width: var(--max); margin: 0 auto;
+}
+.p-back { font-family:"Courier Prime",monospace; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; background: none; border: none; color: var(--ink); display:flex; align-items:center; gap: 10px; }
+.p-back:hover .arr { transform: translateX(-5px); }
+.p-back .arr { transition: transform 0.3s var(--ease); }
+.p-nav { display:flex; gap: 6px; }
+.p-nav button { font-family:"Courier Prime",monospace; font-size: 12px; letter-spacing:0.1em; text-transform: uppercase; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); padding: 6px 12px; cursor: pointer; transition: all 0.25s var(--ease); }
+.p-nav button:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.p-nav button:disabled { opacity: 0.3; cursor: default; }
+
+/* masthead */
+.p-mast { position: relative; padding: clamp(40px,8vh,90px) 0 clamp(28px,5vh,50px); }
+.p-index { font-family:"Courier Prime",monospace; font-size: 14px; letter-spacing: 0.2em; color: var(--accent); font-weight: 700; }
+.p-name {
+  font-family:"Bodoni Moda",serif; font-weight: 900;
+  font-size: clamp(48px, 11vw, 150px); line-height: 0.86; letter-spacing: -0.02em;
+  text-transform: uppercase; margin: 8px 0 0;
+}
+.p-name .ln { display: block; overflow: hidden; }
+.p-name .ln > span { display: inline-block; transform: translateY(105%); }
+.p-meta-row { display:flex; gap: 28px; flex-wrap: wrap; margin-top: 26px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 16px 0; }
+.p-meta-row .cell .k { font-family:"Courier Prime",monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); }
+.p-meta-row .cell .v { font-family:"Bodoni Moda",serif; font-size: 19px; font-weight: 500; margin-top: 2px; }
+
+.p-portrait-float { position: absolute; right: 0; top: clamp(30px,6vh,70px); width: clamp(120px, 18vw, 230px); height: clamp(120px, 18vw, 230px); opacity: 0.9; overflow: hidden; }
+
+/* big pull quote */
+.p-quote { padding: clamp(40px,8vh,90px) 0; position: relative; }
+.p-quote .mark { font-family:"Bodoni Moda",serif; font-size: clamp(120px,20vw,300px); line-height: 0.5; color: var(--accent); opacity: 0.9; height: 0.4em; display:block; }
+.p-quote blockquote {
+  font-family: "Bodoni Moda", Georgia, serif; font-weight: 500; font-style: italic;
+  font-size: clamp(30px, 5.2vw, 74px); line-height: 1.04; letter-spacing: -0.015em;
+  max-width: 16ch;
+}
+.p-quote .qkind { font-family:"Courier Prime",monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 18px; }
+.p-quote cite { display:block; font-style: normal; font-family:"Courier Prime",monospace; font-size: 13px; letter-spacing: 0.1em; color: var(--ink-soft); margin-top: 26px; }
+
+/* sections */
+.p-sec { padding: clamp(34px,6vh,70px) 0; border-top: 1.5px solid var(--ink); display: grid; grid-template-columns: 220px 1fr; gap: clamp(24px,5vw,70px); }
+.p-sec .s-label { font-family:"Courier Prime",monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.p-sec .s-label .n { display:block; font-size: 11px; color: var(--ink-faint); margin-top: 6px; }
+.p-sec .s-body { font-size: clamp(19px, 2.2vw, 26px); line-height: 1.5; font-weight: 300; max-width: 60ch; }
+.p-sec .s-body strong { font-weight: 600; }
+.p-sec .s-argument {
+  font-family: "Newsreader", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 1.32;
+  font-weight: 400;
+  letter-spacing: 0;
+  max-width: 26ch;
+}
+.p-sec.work-sec .s-body { font-family:"Bodoni Moda",serif; }
+.p-work-title { font-family:"Bodoni Moda",serif; font-style: italic; font-weight: 700; font-size: clamp(28px,4vw,46px); line-height: 1.04; }
+.p-work-year { font-family:"Courier Prime",monospace; font-size: 15px; letter-spacing: 0.1em; color: var(--accent); margin-top: 10px; }
+.p-work-also { font-family:"Courier Prime",monospace; font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
+
+/* ============================================================
+   TOP NAV (Records / Timeline)
+   ============================================================ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 4000;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 12px clamp(20px, 5vw, 80px);
+  background: transparent; border-bottom: 2px solid transparent;
+  transition: background 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.topnav.solid {
+  background: var(--paper);
+  border-bottom: 2px solid var(--ink);
+  box-shadow: 0 6px 24px rgba(24,19,10,0.10);
+}
+.tn-brand {
+  font-family: "Courier Prime", monospace; font-weight: 700; letter-spacing: 0.3em;
+  text-transform: uppercase; font-size: 14px; color: var(--ink);
+  background: none; border: none; cursor: pointer; display: flex; align-items: baseline; gap: 12px;
+  opacity: 0; transition: opacity 0.4s var(--ease);
+}
+.topnav.solid .tn-brand { opacity: 1; }
+.tn-brand-sub { font-size: 11px; letter-spacing: 0.18em; color: var(--ink-soft); font-weight: 400; }
+@media (max-width: 640px) { .tn-brand-sub { display: none; } }
+.tn-tabs { display: flex; gap: 0; border: 1.5px solid var(--ink); }
+.tn-tab {
+  font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.14em;
+  text-transform: uppercase; font-weight: 700; padding: 8px 18px; white-space: nowrap;
+  background: transparent; color: var(--ink); border: none; cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.tn-tab + .tn-tab { border-left: 1.5px solid var(--ink); }
+.tn-tab:hover { background: rgba(24,19,10,0.08); }
+.tn-tab.on { background: var(--ink); color: var(--paper); }
+
+/* give the scroll-content room under the (eventually solid) nav */
+.gallery-wrap { padding-top: clamp(56px, 8vw, 120px); }
+.timeline-view { padding-top: 84px; }
+
+/* ============================================================
+   TIMELINE — The Machinery of Empire
+   ============================================================ */
+.timeline-view { padding-left: clamp(20px, 5vw, 80px); padding-right: clamp(20px, 5vw, 80px); padding-bottom: 160px; }
+.tl-mast { max-width: 1100px; margin: 0 auto; padding: clamp(30px, 6vh, 70px) 0 clamp(24px, 4vh, 44px); }
+.tl-kicker { font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent, #A01B23); font-weight: 700; }
+.tl-title { font-family: "Bodoni Moda", serif; font-weight: 900; font-size: clamp(48px, 10vw, 150px); line-height: 0.86; letter-spacing: -0.02em; text-transform: uppercase; margin: 12px 0 0; }
+.tl-lede { max-width: 720px; font-size: clamp(18px, 2.2vw, 25px); line-height: 1.45; font-weight: 300; color: var(--ink-soft); margin-top: 26px; }
+.tl-lede em { font-style: italic; color: var(--ink); }
+
+/* span chart */
+.span-chart { max-width: 1100px; margin: 0 auto clamp(40px, 7vh, 90px); border: 2px solid var(--ink); padding: 26px clamp(16px, 2.4vw, 30px) 18px; background: rgba(24,19,10,0.015); }
+.sc-axis { position: relative; height: 18px; margin-left: var(--label-w, 168px); }
+.sc-tick { position: absolute; top: 0; transform: translateX(-50%); }
+.sc-tick-label { font-family: "Courier Prime", monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--ink-faint); }
+.sc-rows { display: flex; flex-direction: column; }
+.sc-row {
+  display: grid; grid-template-columns: var(--label-w, 168px) 1fr auto; align-items: center; gap: 14px;
+  background: none; border: none; border-top: 1px solid rgba(24,19,10,0.18); cursor: pointer;
+  padding: 9px 0; text-align: left; transition: background 0.2s var(--ease);
+}
+.sc-row:hover { background: rgba(24,19,10,0.05); }
+.sc-name { font-family: "Bodoni Moda", serif; font-weight: 700; font-size: clamp(13px, 1.4vw, 16px); letter-spacing: -0.01em; }
+.sc-track { position: relative; height: 16px; }
+.sc-bar { position: absolute; top: 2px; height: 12px; min-width: 4px; border: 1px solid rgba(24,19,10,0.55); transition: filter 0.2s var(--ease); }
+.sc-row:hover .sc-bar { filter: brightness(1.12) saturate(1.2); }
+.sc-arrow { position: absolute; right: -11px; top: -3px; color: inherit; font-size: 13px; }
+.sc-era { font-family: "Courier Prime", monospace; font-size: 11px; letter-spacing: 0.06em; color: var(--ink-soft); white-space: nowrap; }
+@media (max-width: 720px) {
+  .span-chart { --label-w: 96px; }
+  .sc-era { display: none; }
+  .sc-row { grid-template-columns: var(--label-w) 1fr; }
+}
+
+/* empire dossiers */
+.tl-list { max-width: 1100px; margin: 0 auto; }
+.empire { padding: clamp(40px, 7vh, 90px) 0; border-top: 3px solid var(--ink); }
+.empire:first-child { border-top: none; }
+.empire-head { display: grid; grid-template-columns: 200px 1fr; gap: clamp(20px, 4vw, 56px); align-items: start; margin-bottom: clamp(28px, 5vh, 52px); }
+.empire-spine { position: relative; padding-left: 26px; }
+.empire-node { position: absolute; left: 0; top: 6px; width: 16px; height: 16px; background: var(--accent); border: 3px solid var(--ink); border-radius: 50%; }
+.empire-spine::before { content: ""; position: absolute; left: 7px; top: 20px; bottom: -90px; width: 2px; background: rgba(24,19,10,0.25); }
+.empire-era { display: block; font-family: "Courier Prime", monospace; font-weight: 700; font-size: clamp(15px, 1.8vw, 20px); letter-spacing: 0.04em; color: var(--accent); }
+.empire-seq { display: block; font-family: "Courier Prime", monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--ink-faint); margin-top: 6px; }
+.empire-name { font-family: "Bodoni Moda", serif; font-weight: 900; font-size: clamp(34px, 6vw, 80px); line-height: 0.92; letter-spacing: -0.02em; text-transform: uppercase; }
+.empire-indictment { font-family: "Newsreader", serif; font-style: italic; font-size: clamp(20px, 2.8vw, 34px); line-height: 1.22; margin-top: 16px; max-width: 24ch; color: var(--ink); }
+
+.empire-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(22px, 3vw, 44px) clamp(28px, 5vw, 64px); padding-left: clamp(0px, 0vw, 0px); }
+.empire-field { border-top: 1.5px solid var(--ink); padding-top: 16px; }
+.ef-label { font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--accent); display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+.ef-num { font-size: 11px; color: var(--ink-faint); min-width: 20px; }
+.ef-body { font-size: clamp(16px, 1.7vw, 19px); line-height: 1.5; font-weight: 300; }
+@media (max-width: 760px) {
+  .empire-head { grid-template-columns: 1fr; gap: 14px; }
+  .empire-spine::before { display: none; }
+  .empire-grid { grid-template-columns: 1fr; }
+}
+
+.tl-coda { max-width: 1100px; margin: clamp(40px,7vh,80px) auto 0; border-top: 3px solid var(--ink); padding-top: clamp(30px, 5vh, 56px); }
+.tl-coda p { font-family: "Bodoni Moda", serif; font-weight: 700; font-style: italic; font-size: clamp(24px, 4vw, 48px); line-height: 1.1; max-width: 22ch; }
+.tl-coda-sub { font-family: "Newsreader", serif !important; font-weight: 300 !important; font-style: normal !important; font-size: clamp(17px, 2vw, 22px) !important; color: var(--ink-soft); margin-top: 18px; max-width: 40ch; }
+
+/* ============================================================
+   LINEAGE (connections) + CONTINUE READING
+   ============================================================ */
+.lineage { display: flex; flex-direction: column; gap: 0; max-width: 60ch; }
+.lineage-link {
+  display: flex; align-items: center; gap: 16px; width: 100%;
+  background: none; border: none; border-bottom: 1.5px solid var(--ink);
+  padding: 16px 4px; cursor: pointer; text-align: left; color: var(--ink);
+  transition: background 0.25s var(--ease), padding 0.25s var(--ease);
+}
+.lineage-link:first-child { border-top: 1.5px solid var(--ink); }
+.lineage-link:hover { background: var(--lk); color: var(--paper); padding-left: 14px; }
+.lineage-link:hover .lk-rel { color: rgba(255,255,255,0.8); }
+.lineage-link:hover .lk-node { background: var(--paper); }
+.lk-node { width: 12px; height: 12px; border-radius: 50%; background: var(--lk); border: 2px solid currentColor; flex: none; }
+.lk-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.lk-name { font-family: "Bodoni Moda", serif; font-weight: 700; font-size: clamp(18px, 2.2vw, 26px); line-height: 1; }
+.lk-rel { font-family: "Newsreader", serif; font-style: italic; font-size: 15px; color: var(--ink-soft); }
+.lk-arr { font-family: "Courier Prime", monospace; font-size: 20px; transition: transform 0.25s var(--ease); }
+.lineage-link:hover .lk-arr { transform: translateX(6px); }
+
+.readnext { display: flex; flex-direction: column; gap: 22px; max-width: 60ch; }
+.rn-primary {
+  display: flex; flex-direction: column; gap: 4px; text-decoration: none;
+  background: var(--ink); color: var(--paper); padding: 22px 24px;
+  transition: background 0.3s var(--ease);
+}
+.rn-primary:hover { background: var(--accent); }
+.rn-p-kind { font-family: "Courier Prime", monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
+.rn-p-title { font-family: "Bodoni Moda", serif; font-style: italic; font-weight: 700; font-size: clamp(22px, 3vw, 34px); line-height: 1.05; }
+.rn-p-cta { font-family: "Courier Prime", monospace; font-size: 13px; letter-spacing: 0.06em; margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+.rn-ext { font-size: 13px; opacity: 0.8; }
+
+.rn-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.rn-list li { border-bottom: 1px solid var(--ink); }
+.rn-list li:first-child { border-top: 1px solid var(--ink); }
+.rn-list a {
+  display: grid; grid-template-columns: 1fr auto; grid-template-areas: "title ext" "author ext" "why ext";
+  gap: 2px 12px; padding: 14px 4px; text-decoration: none; color: var(--ink);
+  transition: padding 0.2s var(--ease), background 0.2s var(--ease);
+}
+.rn-list a:hover { padding-left: 12px; background: rgba(24,19,10,0.05); }
+.rn-title { grid-area: title; font-family: "Bodoni Moda", serif; font-weight: 700; font-style: italic; font-size: 19px; line-height: 1.1; }
+.rn-author { grid-area: author; font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
+.rn-why { grid-area: why; font-family: "Newsreader", serif; font-style: italic; font-size: 15px; color: var(--ink-soft); margin-top: 2px; }
+.rn-list .rn-ext { grid-area: ext; align-self: center; }
+
+/* ============================================================
+   TRACING BACK — What Was Taken
+   ============================================================ */
+.tracing-view { padding: 84px clamp(20px, 5vw, 80px) 160px; }
+.trace-mast { max-width: 1100px; margin: 0 auto; padding: clamp(30px, 6vh, 70px) 0 clamp(30px, 5vh, 56px); }
+.trace-kicker { font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #B01E63; font-weight: 700; }
+.trace-title { font-family: "Bodoni Moda", serif; font-weight: 900; font-size: clamp(52px, 11vw, 168px); line-height: 0.84; letter-spacing: -0.02em; text-transform: uppercase; margin: 12px 0 0; }
+.trace-lede { max-width: 720px; font-size: clamp(18px, 2.2vw, 25px); line-height: 1.45; font-weight: 300; color: var(--ink-soft); margin-top: 26px; }
+
+.trace { max-width: 1100px; margin: 0 auto; padding: clamp(44px, 8vh, 100px) 0; border-top: 3px solid var(--ink); }
+.trace:first-of-type { border-top: none; }
+
+.trace-head { margin-bottom: clamp(30px, 5vh, 56px); }
+.trace-tag { font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.trace-name { font-family: "Bodoni Moda", serif; font-weight: 900; font-size: clamp(46px, 9vw, 120px); line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; margin: 8px 0 0; }
+.trace-name::after { content: ""; display: block; width: 90px; height: 8px; background: var(--accent); margin-top: 18px; }
+.trace-indictment { font-family: "Newsreader", serif; font-style: italic; font-size: clamp(20px, 2.8vw, 32px); line-height: 1.25; margin-top: 22px; max-width: 30ch; }
+
+/* causal chain: Why -> How -> Result */
+.trace-chain { border-left: 2px solid rgba(24,19,10,0.18); margin-left: 11px; }
+.trace-step { position: relative; display: grid; grid-template-columns: 150px 1fr; gap: clamp(16px, 3vw, 48px); padding: clamp(22px, 3.5vh, 40px) 0 clamp(22px, 3.5vh, 40px) clamp(26px, 4vw, 52px); }
+.ts-mark { position: absolute; left: -12px; top: clamp(22px, 3.5vh, 40px); display: flex; align-items: center; }
+.ts-node { width: 20px; height: 20px; border-radius: 50%; background: var(--paper); border: 3px solid var(--accent); }
+.ts-num { position: absolute; left: 30px; font-family: "Courier Prime", monospace; font-size: 11px; font-weight: 700; color: var(--ink-faint); letter-spacing: 0.1em; }
+.ts-label { font-family: "Bodoni Moda", serif; font-weight: 900; font-size: clamp(22px, 2.6vw, 34px); line-height: 1; text-transform: uppercase; color: var(--accent); }
+.ts-sub { display: block; font-family: "Courier Prime", monospace; font-size: 11px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-top: 8px; }
+.ts-body { font-size: clamp(17px, 1.9vw, 21px); line-height: 1.5; font-weight: 300; max-width: 54ch; }
+
+/* In Our Time — dark panel = the open present */
+.trace-now { margin-top: clamp(20px, 3vh, 36px); margin-left: clamp(26px, 4vw, 52px); background: var(--ink); color: var(--paper); padding: clamp(26px, 4vw, 46px); position: relative; overflow: hidden; }
+.trace-now::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: var(--accent); }
+.tnw-top { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; }
+.tnw-label { font-family: "Bodoni Moda", serif; font-weight: 900; font-style: italic; font-size: clamp(24px, 3.4vw, 44px); color: var(--paper); }
+.tnw-status { font-family: "Courier Prime", monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700; border: 1.5px solid var(--accent); padding: 5px 10px; }
+.tnw-body { font-size: clamp(17px, 2vw, 23px); line-height: 1.5; font-weight: 300; max-width: 58ch; color: rgba(255,255,255,0.92); }
+.tnw-records { display: flex; align-items: center; gap: 14px 18px; flex-wrap: wrap; margin-top: 28px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.2); }
+.tnw-records-lead { font-family: "Courier Prime", monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+.tnw-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.tnw-chip {
+  font-family: "Bodoni Moda", serif; font-weight: 500; font-style: italic; font-size: 16px;
+  background: transparent; color: var(--paper); border: 1.5px solid rgba(255,255,255,0.4);
+  padding: 7px 14px; cursor: pointer; transition: all 0.25s var(--ease);
+}
+.tnw-chip:hover { background: var(--lk); border-color: var(--lk); color: var(--paper); transform: translateY(-2px); }
+
+.trace-coda { max-width: 1100px; margin: clamp(40px,7vh,80px) auto 0; border-top: 3px solid var(--ink); padding-top: clamp(30px, 5vh, 56px); }
+.trace-coda p { font-family: "Bodoni Moda", serif; font-weight: 700; font-style: italic; font-size: clamp(24px, 4vw, 48px); line-height: 1.12; max-width: 26ch; }
+.trace-coda-sub { font-family: "Newsreader", serif !important; font-weight: 300 !important; font-style: normal !important; font-size: clamp(17px, 2vw, 22px) !important; color: var(--ink-soft); margin-top: 18px; max-width: 44ch; }
+
+@media (max-width: 760px) {
+  .trace-step { grid-template-columns: 1fr; gap: 8px; padding-left: 30px; }
+  .ts-body { max-width: none; }
+}
+
+/* ---- Tracing Back: peoples index ---- */
+.people-index { max-width: 1100px; margin: 0 auto clamp(40px, 7vh, 84px); border: 2px solid var(--ink); background: rgba(24,19,10,0.015); }
+.px-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 2px solid var(--ink); font-family: "Courier Prime", monospace; text-transform: uppercase; letter-spacing: 0.18em; font-size: 12px; font-weight: 700; }
+.px-head-note { color: var(--ink-faint); font-weight: 400; }
+.px-row {
+  display: grid; grid-template-columns: 38px 18px 1.5fr 1fr 1.1fr auto; align-items: center; gap: 16px;
+  width: 100%; text-align: left; background: none; border: none; border-top: 1px solid rgba(24,19,10,0.16);
+  padding: 14px 20px; cursor: pointer; color: var(--ink); transition: background 0.2s var(--ease), padding 0.2s var(--ease);
+}
+.px-row:first-of-type { border-top: none; }
+.px-row:hover { background: var(--accent); padding-left: 26px; }
+.px-row:hover .px-no, .px-row:hover .px-region, .px-row:hover .px-col, .px-row:hover .px-era { color: rgba(255,255,255,0.82); }
+.px-row:hover .px-name { color: var(--paper); }
+.px-row:hover .px-swatch { background: var(--paper); }
+.px-no { font-family: "Courier Prime", monospace; font-size: 12px; font-weight: 700; color: var(--ink-faint); }
+.px-swatch { width: 14px; height: 14px; background: var(--accent); border: 2px solid var(--ink); }
+.px-name { font-family: "Bodoni Moda", serif; font-weight: 700; font-size: clamp(16px, 1.8vw, 22px); letter-spacing: -0.01em; }
+.px-region, .px-col { font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.06em; color: var(--ink-soft); text-transform: uppercase; }
+.px-era { font-family: "Courier Prime", monospace; font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+@media (max-width: 800px) {
+  .px-row { grid-template-columns: 30px 14px 1fr auto; }
+  .px-region, .px-col { display: none; }
+}
+
+/* ---- Tracing Back: per-people dossier ---- */
+.ppl-list { max-width: 1100px; margin: 0 auto; }
+.ppl { padding: clamp(40px, 7vh, 90px) 0; border-top: 3px solid var(--ink); }
+.ppl:first-child { border-top: none; }
+.ppl-head { margin-bottom: clamp(26px, 4vh, 44px); position: relative; padding-left: 26px; }
+.ppl-head::before { content: ""; position: absolute; left: 0; top: 8px; width: 14px; height: 14px; background: var(--accent); border: 3px solid var(--ink); border-radius: 50%; }
+.ppl-tag { font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.ppl-name { font-family: "Bodoni Moda", serif; font-weight: 900; font-size: clamp(40px, 8vw, 104px); line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; margin: 8px 0 0; }
+.ppl-name::after { content: ""; display: block; width: 80px; height: 7px; background: var(--accent); margin-top: 16px; }
+.ppl-summary { font-family: "Newsreader", serif; font-style: italic; font-size: clamp(19px, 2.6vw, 30px); line-height: 1.24; margin-top: 20px; max-width: 32ch; }
+.ppl-era { font-family: "Courier Prime", monospace; font-size: 12px; letter-spacing: 0.1em; color: var(--ink-soft); text-transform: uppercase; margin-top: 14px; }
+
+.ppl-losses { display: flex; flex-direction: column; gap: 0; }
+.loss { border-top: 1.5px solid var(--ink); padding: clamp(22px, 3.5vh, 38px) 0; }
+.loss-name { font-family: "Bodoni Moda", serif; font-weight: 900; font-size: clamp(24px, 3.4vw, 40px); line-height: 1; text-transform: uppercase; color: var(--accent); display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; letter-spacing: -0.01em; }
+.loss-num { font-family: "Courier Prime", monospace; font-size: 13px; font-weight: 700; color: var(--ink-faint); }
+.loss-beats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+.beat { background: var(--paper); border: 1px solid rgba(24,19,10,0.16); padding: 18px 20px; }
+.beat-k { display: flex; align-items: baseline; gap: 10px; font-family: "Courier Prime", monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.beat-sub { font-weight: 400; letter-spacing: 0.1em; color: var(--ink-faint); font-size: 10px; }
+.beat-body { font-size: clamp(15px, 1.6vw, 17px); line-height: 1.46; font-weight: 300; }
+.beat-now { background: var(--ink); border-color: var(--ink); }
+.beat-now .beat-k { color: var(--accent); }
+.beat-now .beat-sub { color: rgba(255,255,255,0.45); }
+.beat-now .beat-body { color: rgba(255,255,255,0.92); }
+@media (max-width: 720px) { .loss-beats { grid-template-columns: 1fr; } }
+
+.ppl-records { display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; margin-top: 26px; padding-top: 22px; border-top: 1.5px solid var(--ink); }
+.ppl-records-lead { font-family: "Courier Prime", monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); }
+.ppl-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.ppl-chip {
+  font-family: "Bodoni Moda", serif; font-weight: 500; font-style: italic; font-size: 16px;
+  background: transparent; color: var(--ink); border: 1.5px solid var(--ink);
+  padding: 7px 14px; cursor: pointer; transition: all 0.25s var(--ease);
+}
+.ppl-chip:hover { background: var(--lk); border-color: var(--lk); color: var(--paper); transform: translateY(-2px); }
+
+/* shared: dossier sources footer (Timeline + Tracing Back) */
+.dossier-sources { margin-top: clamp(22px, 3.5vh, 40px); padding-top: 18px; border-top: 1px dashed rgba(24,19,10,0.35); }
+.ds-label { display: block; font-family: "Courier Prime", monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 12px; }
+.dossier-sources ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.dossier-sources li { font-size: 14px; line-height: 1.4; }
+.dossier-sources a {
+  font-family: "Newsreader", serif; font-style: italic; color: var(--ink-soft);
+  text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.dossier-sources a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.ds-ext { font-style: normal; font-family: "Courier Prime", monospace; font-size: 12px; opacity: 0.7; }
+
+/* from the page — genuine excerpt block */
+.p-passage {
+  position: relative;
+  border-left: 4px solid var(--accent);
+  padding: 4px 0 4px clamp(20px, 3vw, 40px);
+}
+.p-passage blockquote {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(20px, 2.6vw, 32px);
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  max-width: 36ch;
+  text-indent: -0.4em;
+}
+.p-passage blockquote::first-letter {
+  initial-letter: 2;
+  font-family: "Bodoni Moda", serif;
+  font-weight: 900;
+  color: var(--accent);
+  margin-right: 8px;
+}
+.p-passage figcaption {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  margin-top: 24px;
+  font-family: "Courier Prime", monospace;
+}
+.p-passage figcaption .src { font-size: 13px; letter-spacing: 0.08em; color: var(--ink-soft); font-style: normal; }
+.p-passage figcaption .rights {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 4px 9px; border: 1.5px solid currentColor;
+}
+.p-passage figcaption .rights.public-domain { color: var(--accent); }
+.p-passage figcaption .rights.fair-use { color: var(--ink-soft); border-style: dashed; }
+
+/* fate as a redacted/stamp block */
+.p-fate { margin-top: 8px; }
+.p-fate .stamp {
+  display:inline-block; border: 2.5px solid var(--accent); color: var(--accent);
+  font-family:"Courier Prime",monospace; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.18em; font-size: 12px; padding: 6px 12px; transform: rotate(-3deg);
+  margin-bottom: 22px;
+}
+
+/* scroll reveal */
+.reveal { opacity: 0; transform: translateY(34px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* progress bar */
+.p-progress { position: fixed; top: 0; left: 0; height: 4px; background: var(--accent); z-index: 60; width: 0; }
+
+/* footer nav to next thinker */
+.p-next {
+  margin-top: 60px; padding: clamp(34px,6vh,60px) clamp(24px,4vw,48px);
+  background: var(--ink); color: var(--paper); cursor: pointer;
+  display:flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  transition: background 0.4s var(--ease);
+}
+.p-next:hover { background: var(--accent); }
+.p-next .nk { font-family:"Courier Prime",monospace; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
+.p-next .nn { font-family:"Bodoni Moda",serif; font-weight: 900; font-size: clamp(28px,4vw,54px); line-height: 0.95; text-transform: uppercase; }
+.p-next .narr { font-size: clamp(30px,5vw,60px); }
+
+/* ============================================================
+   responsive
+   ============================================================ */
+@media (max-width: 720px) {
+  .p-sec { grid-template-columns: 1fr; gap: 14px; }
+  .p-portrait-float { display: none; }
+  .p-meta-row { gap: 18px; }
+  .card { min-height: 300px; }
+}
+
+/* ============================================================
+   MACHINE VIEW — Understanding the Machine
+   ============================================================ */
+
+.machine-view {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(24px, 6vw, 90px);
+  position: relative;
+  z-index: 2;
+}
+
+.machine-mast {
+  text-align: center;
+  margin-bottom: clamp(60px, 12vw, 120px);
+  padding-top: clamp(40px, 8vw, 80px);
+}
+.machine-kicker {
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+}
+.machine-title {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+.machine-lede {
+  font-size: clamp(18px, 2.2vw, 24px);
+  line-height: 1.5;
+  max-width: 48ch;
+  margin: 0 auto;
+  color: var(--ink-soft);
+}
+
+/* Framework Index */
+.framework-index {
+  border: 2px solid var(--ink);
+  margin-bottom: clamp(60px, 12vw, 120px);
+  background: var(--paper);
+}
+.fx-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 2px solid var(--ink);
+  font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+}
+.fx-head-note { color: var(--ink-soft); }
+.fx-row {
+  display: grid;
+  grid-template-columns: 40px 12px 1fr 1fr 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.3s var(--ease);
+}
+.fx-row:hover { background: rgba(24,19,10,0.06); }
+.fx-no {
+  font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  font-size: 12px;
+}
+.fx-swatch {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.fx-concept {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 700;
+  font-size: 16px;
+}
+.fx-thinker {
+  font-family: "Courier Prime", monospace;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.fx-work {
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+/* Framework Entries */
+.framework {
+  margin-bottom: clamp(80px, 15vw, 160px);
+  position: relative;
+}
+.framework-head {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 48px;
+  align-items: flex-start;
+}
+.framework-spine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.framework-node {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--ink);
+}
+.framework-era {
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+.framework-seq {
+  font-family: "Courier Prime", monospace;
+  font-size: 11px;
+  opacity: 0.7;
+}
+.framework-title-block {
+  flex: 1;
+}
+.framework-concept {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 0.95;
+  margin-bottom: 16px;
+  color: var(--accent);
+}
+.framework-thinker-line {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.framework-name {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+}
+.framework-life {
+  font-family: "Courier Prime", monospace;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.framework-origin {
+  font-family: "Courier Prime", monospace;
+  font-size: 14px;
+  color: var(--ink-faint);
+}
+.framework-role {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+/* Framework Quote */
+.framework-quote {
+  margin-bottom: 48px;
+  padding: 32px;
+  background: var(--paper-2);
+  border-left: 4px solid var(--accent);
+}
+.fq-text {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.4;
+  font-style: italic;
+  margin: 0;
+}
+.fq-source {
+  display: block;
+  font-family: "Courier Prime", monospace;
+  font-size: 13px;
+  font-style: normal;
+  color: var(--ink-soft);
+  margin-top: 16px;
+}
+
+/* Framework Grid */
+.framework-grid {
+  display: grid;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+.framework-field {
+  border: 2px solid var(--ink);
+  padding: 24px;
+}
+.ff-label {
+  font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ff-num {
+  background: var(--accent);
+  color: var(--paper);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+.ff-body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Framework Record Link */
+.framework-record {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.framework-record-lead {
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+}
+.framework-chip {
+  background: var(--accent);
+  color: var(--paper);
+  border: none;
+  padding: 8px 16px;
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  transition: background 0.3s var(--ease);
+}
+.framework-chip:hover { background: var(--ink); }
+
+/* Machine Coda */
+.machine-coda {
+  text-align: center;
+  padding: clamp(60px, 12vw, 120px) 0;
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: clamp(20px, 3vw, 32px);
+  line-height: 1.4;
+}
+.machine-coda-sub {
+  font-size: clamp(16px, 2.2vw, 20px);
+  color: var(--ink-soft);
+  margin-top: 16px;
+}
+
+/* reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

@@ -1,0 +1,331 @@
+// L.B.Sys — Living Book System. The 21 thinkers.
+// Ordered chronologically by their key work (1903 -> ~2018).
+//
+// quote.attributed === true  -> a genuine short, famous, attributed line (rendered as a quotation)
+// quote.attributed === false -> a distilled statement of their central argument, in my words
+//
+// passage (optional) -> a genuine excerpt FROM THE BOOK.
+//   passage.rights === "public-domain" -> work is out of copyright; extended quotation is fine.
+//   passage.rights === "fair-use"      -> work is in copyright; a short line quoted under fair use.
+//   Only present where I am confident of the exact wording and the rights are defensible.
+window.LB_THINKERS = [
+  {
+    id: "dubois",
+    name: "W. E. B. Du Bois",
+    life: "1868 \u2013 1963",
+    origin: "United States",
+    role: "Sociologist & Historian",
+    work: { title: "The Souls of Black Folk", year: 1903, also: "Black Reconstruction (1935)" },
+    accent: "#1D3FAE",
+    thesis: "American democracy meant one thing in its promises and another in its practice \u2014 and he spent a lifetime documenting the gap.",
+    bio: "Born in Great Barrington, Massachusetts in 1868, three years after the Civil War, Du Bois went south to Fisk University and saw Jim Crow up close for the first time. He became the first Black American to earn a doctorate from Harvard, studied in Berlin, and produced in The Philadelphia Negro one of the founding works of empirical American sociology. He helped found the NAACP and edited its journal, The Crisis, for a quarter-century, shaping Black political thought across a generation. As he aged he grew more radical, not less \u2014 embracing Pan-Africanism, socialism, and finally communism. He gave the twentieth century the language of \u201cdouble consciousness\u201d: the strain of seeing yourself through the eyes of a country that does not see you as fully human.",
+    offering: "A reader walked away understanding that the \u201cNegro problem\u201d was not a defect in Black people but a measurement of the distance between America's stated ideals and its actual conduct. Black Reconstruction later demolished the myth that emancipation had failed for lack of Black capacity.",
+    fate: "Hounded by his own government during the McCarthy years, he renounced his American citizenship and moved to Ghana at Kwame Nkrumah's invitation. He died there in 1963 on the eve of the March on Washington \u2014 the timing reads like punctuation at the end of a sentence he had been writing for sixty years.",
+    quote: { text: "The problem of the twentieth century is the problem of the color line.", source: "The Souls of Black Folk", attributed: true },
+    passage: {
+      text: "It is a peculiar sensation, this double-consciousness, this sense of always looking at one's self through the eyes of others, of measuring one's soul by the tape of a world that looks on in amused contempt and pity.",
+      source: "The Souls of Black Folk (1903)",
+      rights: "public-domain"
+    }
+  },
+  {
+    id: "james",
+    name: "C. L. R. James",
+    life: "1901 \u2013 1989",
+    origin: "Trinidad",
+    role: "Historian",
+    work: { title: "The Black Jacobins", year: 1938 },
+    accent: "#A01B23",
+    thesis: "The Haitian Revolution was not a colonial footnote \u2014 it was a world-historical event, the equal of the French Revolution it terrified.",
+    bio: "Born in Trinidad under British rule in 1901, James was a schoolteacher, cricket lover, and novelist before he became one of the century's great Marxist historians. He moved to Britain in 1932 and threw himself into pan-African and Trotskyist politics, befriending the future leaders of African independence. Taking the only successful slave revolution in history, he treated it with the intellectual seriousness usually reserved for Europe's revolutions \u2014 because the enslaved who made it were thinkers and strategists, not a mob. He later lived in the United States until McCarthy-era authorities expelled him, and wrote, in Beyond a Boundary, what many call the finest book ever written on cricket and colonialism. He spent his final years revered as an elder of the anti-colonial left.",
+    offering: "Readers received the Haitian Revolution restored to its true scale: enslaved people seizing the Enlightenment's promises and forcing the world's most powerful empires to bleed for them. It rewired what counts as history.",
+    fate: "He wrote it while Haiti was still being ignored, decades before the rest of the academy caught up to a story he had already told in full. By his death in 1989 in Brixton, London, he was honoured across three continents.",
+    quote: { text: "The slaves had revolted because they wanted to be free \u2014 and the world would never be the same.", source: "on The Black Jacobins", attributed: false }
+  },
+  {
+    id: "cesaire",
+    name: "Aim\u00e9 C\u00e9saire",
+    life: "1913 \u2013 2008",
+    origin: "Martinique",
+    role: "Poet & Politician",
+    work: { title: "Discourse on Colonialism", year: 1950 },
+    accent: "#CC4514",
+    thesis: "Nazism was not a European aberration. It was colonial practice \u2014 turned, for once, inward on Europeans themselves.",
+    bio: "Born in Martinique in 1913, C\u00e9saire won a scholarship to Paris, where with L\u00e9opold S\u00e9dar Senghor he forged the concept of N\u00e9gritude \u2014 a defiant affirmation of Black culture against the assimilationism of the French empire. His book-length poem, Notebook of a Return to the Native Land, became a landmark of world literature. He returned home, was elected mayor of Fort-de-France and a deputy in the French National Assembly, and held both posts for decades. He mentored the young Frantz Fanon. In 1956 he resigned from the French Communist Party in a famous open letter, refusing to subordinate the colonial question to Moscow's priorities. He delivered one of the century's most shattering arguments: that Europe tolerated and rationalised in the colonies exactly the barbarism it claimed to be horrified by at home.",
+    offering: "The book hands the reader a single unbearable equation \u2014 that colonization works by reducing a human being to a thing, and that the gas chambers were that same logic finally aimed at white people. Europe has never fully absorbed it.",
+    fate: "It remains in print, taught everywhere, and still read as an accusation that Europe would prefer to file under philosophy rather than confession. He died in 2008 and was given a state funeral in Martinique.",
+    quote: { text: "Colonization \u2014 he argued \u2014 works by thingification: it turns the colonized into an object.", source: "Discourse on Colonialism", attributed: false },
+    passage: {
+      text: "A civilization that proves incapable of solving the problems it creates is a decadent civilization. A civilization that chooses to close its eyes to its most crucial problems is a stricken civilization.",
+      source: "Discourse on Colonialism (1950)",
+      rights: "fair-use"
+    }
+  },
+  {
+    id: "achebe",
+    name: "Chinua Achebe",
+    life: "1930 \u2013 2013",
+    origin: "Nigeria",
+    role: "Novelist",
+    work: { title: "Things Fall Apart", year: 1958 },
+    accent: "#1E6B43",
+    thesis: "Igbo civilization was complex, sophisticated, and fully human long before colonialism arrived \u2014 and he proved it as literature, not polemic.",
+    bio: "Born in 1930 in Ogidi, in colonial Nigeria, Achebe was the son of an Igbo Christian convert and grew up between the missionary world and the older one it was displacing. Educated at the University College of Ibadan, he worked in radio broadcasting before publishing Things Fall Apart at twenty-eight \u2014 a novel that showed the inner life of a society the colonizer had described only from the outside. Because it was art rather than argument, it was harder to dismiss, and more devastating. He later served the secessionist cause during the Biafran war and wrote searing poetry from it. A 1990 car accident left him paraplegic, and he spent his final decades teaching in the United States, an elder statesman of African letters who never stopped insisting that Africa be allowed to tell its own story.",
+    offering: "The reader inhabits a whole world \u2014 its proverbs, its gods, its justice and its flaws \u2014 and then watches it broken by missionaries and administrators who saw none of it. He also wrote the essay that dismantled Conrad's reduction of Africa to a backdrop.",
+    fate: "It became the most widely read African novel ever written, translated into some sixty languages, the book that taught a continent it could narrate itself.",
+    quote: { text: "He called Conrad's Heart of Darkness the work of \u201ca thoroughgoing racist.\u201d", source: "An Image of Africa (1975)", attributed: true },
+    passage: {
+      text: "Okonkwo was well known throughout the nine villages and even beyond. His fame rested on solid personal achievements.",
+      source: "Things Fall Apart (1958), opening lines",
+      rights: "fair-use"
+    }
+  },
+  {
+    id: "fanon",
+    name: "Frantz Fanon",
+    life: "1925 \u2013 1961",
+    origin: "Martinique",
+    role: "Psychiatrist",
+    work: { title: "The Wretched of the Earth", year: 1961 },
+    accent: "#D6202B",
+    thesis: "Colonialism is not only theft of land and labour \u2014 it is the systematic disordering of the colonized mind, and decolonization is its violent cure.",
+    bio: "Born in Martinique in 1925, Fanon volunteered for the Free French forces in the Second World War and was decorated \u2014 then met with the same racism he had risked his life against. He trained as a psychiatrist in Lyon and wrote Black Skin, White Masks, a clinical anatomy of how racism colonizes the self. Posted to a hospital in Algeria, he watched France torture its way through a war of independence, resigned his post, and joined the FLN as a theorist and spokesman. He treated the casualties of that war \u2014 on both sides \u2014 and wrote his final book as both political theory and diagnosis of what domination does to a person from the inside. He finished it knowing he was dying of leukaemia, racing the disease to the last page.",
+    offering: "The reader is given a physiology of oppression: how it lodges in the body and the psyche, and why liberation is never simply handed over. Sartre's preface called it more dangerous than a bomb.",
+    fate: "He died at thirty-six, weeks after the book appeared, and was buried in Algerian soil by the liberation army he had served. France considered banning the book. It became scripture for liberation movements across three continents.",
+    quote: { text: "Decolonization is always a violent phenomenon.", source: "The Wretched of the Earth", attributed: true },
+    passage: {
+      text: "Each generation must, out of relative obscurity, discover its mission, fulfill it, or betray it.",
+      source: "The Wretched of the Earth (1961)",
+      rights: "fair-use"
+    }
+  },
+  {
+    id: "baldwin",
+    name: "James Baldwin",
+    life: "1924 \u2013 1987",
+    origin: "United States",
+    role: "Essayist & Witness",
+    work: { title: "The Fire Next Time", year: 1963 },
+    accent: "#B01E63",
+    thesis: "He was not an academic but something more dangerous \u2014 a witness with perfect prose, who made denial structurally impossible.",
+    bio: "Born in Harlem in 1924, the eldest of nine children, Baldwin was a teenage storefront preacher before he was a writer, and the cadences of the pulpit never left his prose. Largely self-educated, he fled to Paris in 1948 to escape an America he felt was bent on destroying him, and from that distance wrote himself into one of the language's great essayists. In novels and essays \u2014 Go Tell It on the Mountain, Notes of a Native Son, The Fire Next Time \u2014 he documented American anti-Black reality from the inside with a clarity that left no exit. His specific target was not only the open racist but the comfortable white liberal, because he understood comfort itself to be the enemy. He moved between America and France for the rest of his life, a conscience the country could neither silence nor fully hear.",
+    offering: "The reader is offered no absolution, only sight. The book asks white America to look at what it has built and at what it has refused to feel \u2014 and warns of the reckoning that refusal guarantees.",
+    fate: "His sentences have outlasted nearly every politician of his era; he is now read as a prophet whose warnings were filed away as eloquence. He died in France in 1987.",
+    quote: { text: "God gave Noah the rainbow sign \u2014 no more water, the fire next time.", source: "the spiritual that gives the book its title", attributed: true }
+  },
+  {
+    id: "galeano",
+    name: "Eduardo Galeano",
+    life: "1940 \u2013 2015",
+    origin: "Uruguay",
+    role: "Journalist",
+    work: { title: "Open Veins of Latin America", year: 1971 },
+    accent: "#B4471F",
+    thesis: "Latin America's poverty is not bad luck. It is the precise, traceable result of five centuries of European and American extraction.",
+    bio: "Born in Montevideo in 1940, Galeano published his first political cartoons at fourteen and was editing an influential weekly in his twenties. He traced five hundred years of plunder \u2014 silver, sugar, rubber, oil, coffee \u2014 in prose so exact it reads like poetry, writing the book in three months by candlelight as the dictatorships closed in. After Uruguay's 1973 coup he was jailed and then exiled, first to Argentina and then, when death squads there listed his name, to Spain. In exile he wrote his masterwork, the Memory of Fire trilogy, retelling the entire history of the Americas in mosaic fragments. He returned home in 1985 when democracy did, and became Latin America's beloved literary conscience.",
+    offering: "The reader follows the wealth out of the continent and watches who got rich at the other end. It turns a map of \u201cdeveloping\u201d nations into a crime scene with a paper trail.",
+    fate: "Hugo Ch\u00e1vez handed Barack Obama a copy on camera in 2009; it shot to the top of the bestseller list. The establishment read the gift as a provocation \u2014 correctly. Galeano died in Montevideo in 2015.",
+    quote: { text: "The division of labour among nations is that some specialise in winning, and others in losing.", source: "Open Veins of Latin America", attributed: true }
+  },
+  {
+    id: "rodney",
+    name: "Walter Rodney",
+    life: "1942 \u2013 1980",
+    origin: "Guyana",
+    role: "Historian",
+    work: { title: "How Europe Underdeveloped Africa", year: 1972 },
+    accent: "#1B7A4B",
+    thesis: "African poverty is not a natural condition. It was manufactured \u2014 the deliberate, systematic product of European extraction.",
+    bio: "Born in Georgetown, British Guiana in 1942, Rodney was a prodigious student who earned his doctorate in African history at London's SOAS by twenty-four. He taught in Tanzania at the University of Dar es Salaam \u2014 then a crucible of African socialist thought \u2014 and in Jamaica, where the government banned him from re-entry in 1968, touching off the Rodney Riots. He reframed \u201cunderdevelopment\u201d as a verb done to Africa, not a state Africa was found in: development and underdevelopment, he showed, were two outputs of the same machine. Returning to Guyana, he co-founded the Working People's Alliance to challenge the increasingly authoritarian regime. He combined the rigour of a scholar with the commitment of an organiser, and the state treated him as exactly that dangerous.",
+    offering: "The reader gets the accounting: how the wealth of one continent was built by impoverishing another, and why the relationship between Europe and Africa was never partnership but predation.",
+    fate: "He was assassinated by a car bomb in Georgetown in 1980, at thirty-eight, killed by a device hidden in a walkie-talkie. His government's hand in it was widely assumed but never fully prosecuted.",
+    quote: { text: "Underdevelopment, he argued, is not a condition Africa was in \u2014 it is something Europe did to it.", source: "How Europe Underdeveloped Africa", attributed: false }
+  },
+  {
+    id: "zinn",
+    name: "Howard Zinn",
+    life: "1922 \u2013 2010",
+    origin: "United States",
+    role: "Historian",
+    work: { title: "A People's History of the United States", year: 1980 },
+    accent: "#234C8A",
+    thesis: "Retell the entire history of a nation from the standpoint of the conquered, the enslaved, and the exploited \u2014 and it becomes a different country.",
+    bio: "Born in Brooklyn in 1922 to working-class Jewish immigrants, Zinn flew bombing missions over Europe as an Air Force bombardier \u2014 an experience that turned him into a lifelong critic of war. He taught at Spelman College, the historically Black women's college in Atlanta, where he was fired for backing student civil-rights activists, then at Boston University. He removed the generals and presidents from the centre of the American story and put the people they stood on in their place; the familiar triumphs look very different from underneath. An active participant in the movements he wrote about \u2014 civil rights, the campaign against the Vietnam War \u2014 he believed historians could not pretend to neutrality. His book sold over two million copies and changed how a generation of Americans read their own country.",
+    offering: "The reader is handed the other half of the textbook \u2014 the strikes, the massacres, the resistance \u2014 and the realisation that history is written by, and for, the winners.",
+    fate: "It still appears on banned-book lists in American states; one governor tried to purge it from classrooms outright. The people banning it understand exactly what it does. Zinn died in 2010.",
+    quote: { text: "The history of any country, presented as the history of a family, conceals fierce conflicts of interest.", source: "A People's History of the United States", attributed: true }
+  },
+  {
+    id: "ngugi",
+    name: "Ng\u0169g\u0129 wa Thiong'o",
+    life: "1938 \u2013 2025",
+    origin: "Kenya",
+    role: "Novelist & Theorist",
+    work: { title: "Decolonising the Mind", year: 1986 },
+    accent: "#C8941C",
+    thesis: "The deepest colonial wound was linguistic \u2014 to make the colonized think in the colonizer's language, and so within the colonizer's mind.",
+    bio: "Born in 1938 in colonial Kenya, Ng\u0169g\u0129 came of age during the Mau Mau uprising; his family was scarred by the conflict and the British counter-insurgency. Educated at Makerere University and Leeds, he wrote his early, acclaimed novels in English under the name James Ngugi. Then he renounced all three \u2014 the language, the Christianity, and the colonial name \u2014 concluding that political independence was hollow while the imagination remained colonized. He began writing in his mother tongue, Gikuyu, a literary act with a price: a play he staged with villagers led to his detention without trial in 1977, during which he drafted a novel on prison toilet paper. Released but blacklisted, he spent decades in exile, teaching in the United States while continuing to write in Gikuyu.",
+    offering: "The reader learns that language is not a neutral vessel but a carrier of values, memory, and power \u2014 and that to reclaim a people you must first reclaim the words they dream in.",
+    fate: "Long tipped for the Nobel Prize he never received, he lived to be celebrated worldwide as the conscience of African literature, and died in 2025 still writing in the language they had tried to take from him.",
+    quote: { text: "Language was the means of the spiritual subjugation \u2014 reclaiming it is the first act of freedom.", source: "Decolonising the Mind", attributed: false }
+  },
+  {
+    id: "chomsky",
+    name: "Noam Chomsky",
+    life: "b. 1928",
+    origin: "United States",
+    role: "Linguist",
+    work: { title: "Manufacturing Consent", year: 1988, also: "with Edward S. Herman" },
+    accent: "#14706E",
+    thesis: "A free press in a free market does not require censorship to serve power \u2014 the market manufactures the consent on its own.",
+    bio: "Born in Philadelphia in 1928 to Jewish immigrant scholars of Hebrew, Chomsky revolutionised the study of language at MIT, where his theory of generative grammar overturned the reigning behaviourism and reshaped linguistics, philosophy, and cognitive science. From the mid-1960s he became one of America's most relentless political dissidents, beginning with his opposition to the Vietnam War, and spent the following half-century documenting, with almost superhuman thoroughness, the gap between American foreign policy's stated intentions and its operations. With the economist Edward Herman he set out the \u201cpropaganda model\u201d \u2014 an account of how an unfree story gets told by a nominally free press. He has remained, into his nineties, among the most cited living scholars and one of the most determinedly marginalised by the institutions he critiques.",
+    offering: "The reader is given the filters \u2014 ownership, advertising, sourcing \u2014 through which news passes, and a method for reading the silences in the paper as carefully as the print.",
+    fate: "He is largely ignored by the mainstream media he critiques \u2014 a silence he predicted, and documented, as itself part of the mechanism.",
+    quote: { text: "The media serve, and propagandise on behalf of, the powerful interests that control and finance them.", source: "Manufacturing Consent", attributed: false }
+  },
+  {
+    id: "lindqvist",
+    name: "Sven Lindqvist",
+    life: "1932 \u2013 2019",
+    origin: "Sweden",
+    role: "Writer",
+    work: { title: "Exterminate All the Brutes", year: 1992 },
+    accent: "#2D5A7A",
+    thesis: "The death camps were not a German invention. They were a colonial invention \u2014 brought home.",
+    bio: "Born in Stockholm in 1932, Lindqvist earned a doctorate in the history of literature and spent a career inventing a form of his own \u2014 nonfiction that braided travelogue, scholarship, and autobiography into something closer to a meditation than a treatise. He took Kurtz's instruction from Conrad's Heart of Darkness and followed it backward through the genocidal practice of European empire in Africa, tracing the intellectual genealogy of the Holocaust to its colonial source. Crossing the Sahara by bus with his argument assembling around him, he wrote part travelogue, part indictment. His later A History of Bombing applied the same method to aerial warfare. He insisted, against comfortable opinion, that what Europe did at home in the 1940s be read alongside what it had long done elsewhere.",
+    offering: "Part travelogue, part indictment, the book offers the reader a single thread connecting Europe's \u201ccivilising mission\u201d to the camps \u2014 and the unwelcome conclusion that Auschwitz had a long colonial rehearsal.",
+    fate: "It reframed Holocaust studies for a generation, and its title later named an acclaimed documentary series. Lindqvist died in 2019.",
+    quote: { text: "Europe did not lack the knowledge to prevent genocide \u2014 it lacked only the courage to understand what it already knew.", source: "Exterminate All the Brutes", attributed: false }
+  },
+  {
+    id: "trouillot",
+    name: "Michel-Rolph Trouillot",
+    life: "1949 \u2013 2012",
+    origin: "Haiti",
+    role: "Anthropologist",
+    work: { title: "Silencing the Past", year: 1995 },
+    accent: "#5B2A86",
+    thesis: "History is produced. Someone decides what counts as a fact, whose suffering enters the record \u2014 and whose simply disappears.",
+    bio: "Born in Port-au-Prince in 1949 into a distinguished intellectual family, Trouillot fled the Duvalier dictatorship and built his career in the United States, teaching anthropology at Johns Hopkins and the University of Chicago. He examined the machinery of historical silence: the points at which events are made, archived, narrated, and finally made meaningful \u2014 and the power exercised at each. His central case was his own country: he showed how the Haitian Revolution, the most radical of the age, was rendered literally unthinkable to the Europeans of its time and then quietly written out of the Western story. Illness cut his career short, but the conceptual vocabulary he left \u2014 the silencing of the past \u2014 became indispensable to anyone trying to understand how the archive itself takes sides.",
+    offering: "The reader is taught to ask not only \u201cwhat happened\u201d but \u201cwho was allowed to record it.\u201d His chapter on Haiti shows how the most consequential revolution in modern history was rendered unthinkable, then forgotten.",
+    fate: "His framework is now indispensable to anyone trying to understand how the archive itself takes sides. He died in 2012 after a long illness.",
+    quote: { text: "Any historical narrative is a particular bundle of silences.", source: "Silencing the Past", attributed: true },
+    passage: {
+      text: "The production of historical narratives involves the uneven contribution of competing groups and individuals who have unequal access to the means for such production.",
+      source: "Silencing the Past (1995)",
+      rights: "fair-use"
+    }
+  },
+  {
+    id: "mamdani",
+    name: "Mahmood Mamdani",
+    life: "b. 1946",
+    origin: "Uganda",
+    role: "Political Scientist",
+    work: { title: "Citizen and Subject", year: 1996, also: "When Victims Become Killers (2001)" },
+    accent: "#9C3D1E",
+    thesis: "Colonial law split the conquered into citizens and subjects \u2014 and that split is the template for the ethnic catastrophes that followed.",
+    bio: "Born in Kampala in 1946 into Uganda's Indian community, Mamdani was studying in the United States during the civil-rights era when Idi Amin's 1972 decree expelled Uganda's Asians \u2014 making him, briefly, a refugee. He took doctorates at Pittsburgh and Harvard and became one of the world's foremost theorists of colonialism and political violence, teaching at Makerere, Cape Town, and Columbia. He showed that the tribe and the ethnic boundary were not ancient givens but administrative tools \u2014 a legal architecture the colonizer built through indirect rule and then walked away from before the explosion. His later work on Rwanda turned that diagnosis on the most studied genocide of the late twentieth century. He writes as both an African insider and a global scholar, refusing the comfortable explanations of either.",
+    offering: "The reader sees how the structures of indirect rule survived independence intact, and why so many post-colonial conflicts \u2014 Rwanda above all \u2014 run along lines the colonizer first drew.",
+    fate: "His diagnosis reframed how scholars read mass violence in the post-colony: not as ancient hatred erupting, but as colonial design detonating on schedule.",
+    quote: { text: "The colonizer created the categories, drew the lines, and left \u2014 just before the conditions he built exploded.", source: "on Citizen and Subject", attributed: false }
+  },
+  {
+    id: "hochschild",
+    name: "Adam Hochschild",
+    life: "b. 1942",
+    origin: "United States",
+    role: "Journalist",
+    work: { title: "King Leopold's Ghost", year: 1998 },
+    accent: "#0E5C50",
+    thesis: "One king ran a private death machine in the Congo for rubber and profit \u2014 and the world's archives held the proof all along.",
+    bio: "Born in New York in 1942, the son of a mining-industry executive whose business he would spend his life interrogating, Hochschild became a journalist, a civil-rights worker in the American South, and a co-founder of Mother Jones magazine. He reconstructed the atrocities of Leopold II's privately owned Congo \u2014 the forced labour, the severed hands, the terror engineered to extract rubber \u2014 from records that had been hiding in plain sight. He made the reader feel, viscerally, what statistics conceal, and recovered the small band of witnesses who first dared to call it a crime. His other books trace the British abolition movement and the resisters of the First World War. He is a historian of conscience who writes for the general reader without ever talking down to one.",
+    offering: "The reader is made to feel, viscerally, what statistics conceal: a system that may have killed millions of people, and the small band of witnesses who first dared to call it a crime.",
+    fate: "It returned a near-erased atrocity to public memory, sold in the millions, and became the popular reckoning Belgium had spent a century avoiding.",
+    quote: { text: "The horror was not hidden in the jungle \u2014 it was filed, counted, and shipped home as profit.", source: "on King Leopold's Ghost", attributed: false }
+  },
+  {
+    id: "finkelstein",
+    name: "Norman Finkelstein",
+    life: "b. 1953",
+    origin: "United States",
+    role: "Political Scientist",
+    work: { title: "The Holocaust Industry", year: 2000 },
+    accent: "#8A1A1A",
+    thesis: "The memory of genocide, he argued, had been institutionalised into political and financial leverage \u2014 by people who did not suffer it.",
+    bio: "Born in Brooklyn in 1953 to parents who survived the Warsaw Ghetto and the Nazi camps \u2014 the only members of their families to do so \u2014 Finkelstein took that inheritance as the moral spine of his work. He earned his doctorate at Princeton and built a combative scholarly career around the Israel-Palestine conflict and the politics of Holocaust memory. He drew a sharp distinction between the historical catastrophe, which he treated as sacred, and what he called the industry built atop it: an apparatus that, he argued, turned remembrance into political and financial leverage. The argument cost him almost everything. Admired by some as a fearless truth-teller and condemned by others as a provocateur, he has remained, in either reading, a scholar who refused to soften a conclusion he believed the record supported.",
+    offering: "The reader is asked to separate remembrance from exploitation, and to consider who profits when atrocity becomes an instrument rather than a wound.",
+    fate: "He was denied tenure at DePaul University in 2007 after a public campaign against him led by the lawyer Alan Dershowitz. His academic career was, by design, ended.",
+    quote: { text: "He insisted on separating the Nazi Holocaust, the tragedy, from the use later made of its memory.", source: "on The Holocaust Industry", attributed: false }
+  },
+  {
+    id: "davis-mike",
+    name: "Mike Davis",
+    life: "1946 \u2013 2022",
+    origin: "United States",
+    role: "Historian",
+    work: { title: "Late Victorian Holocausts", year: 2001 },
+    accent: "#B07A1B",
+    thesis: "The great famines of the late nineteenth century were not natural disasters. They were structural murder, scheduled by the market.",
+    bio: "Born in 1946 in southern California, Davis worked as a meatcutter, a truck driver, and a labour organiser before he became a historian, and he never lost the class anger of those years. The self-described \u201cMarxist environmentalist\u201d won a MacArthur \u201cgenius\u201d grant and wrote City of Quartz, a landmark dissection of Los Angeles, and Planet of Slums, on the world's exploding informal cities. He documented the engineered famines of India, China, and Brazil during the high noon of empire \u2014 deaths in the tens of millions that coincided exactly with forced integration into a British-run world market. He taught at the University of California, Riverside, and wrote prophetically about pandemics and climate collapse. He faced his own death from cancer in 2022 with the same unsentimental clarity he had brought to everything else.",
+    offering: "The reader learns that grain was exported from starving provinces while millions died, and that drought becomes famine only when policy decides some lives are not worth feeding.",
+    fate: "The book made the word \u201cholocaust\u201d stick to colonial economics, and forced climate, empire and hunger to be read as a single story. Davis died in 2022.",
+    quote: { text: "Millions died not despite the world market, but because they were being forced into it.", source: "on Late Victorian Holocausts", attributed: false }
+  },
+  {
+    id: "kelley",
+    name: "Robin D. G. Kelley",
+    life: "b. 1962",
+    origin: "United States",
+    role: "Historian",
+    work: { title: "Freedom Dreams", year: 2002 },
+    accent: "#6A2BAE",
+    thesis: "The point was never merely to reform the existing world but to imagine a genuinely different one \u2014 and that imagination has its own history.",
+    bio: "Born in 1962 and raised between Harlem and Seattle by a mother who taught him to see beauty as a form of resistance, Kelley became one of the most imaginative historians of his generation. A professor at UCLA, he has written on Alabama communists, on the dignity of Black working-class life, and a definitive biography of the pianist Thelonious Monk. He recovered the radical Black imagination: the surrealists, the communists, the visionaries who refused to settle for a better seat in a broken house and dreamed of another house entirely. Against a politics that only ever reacts, his book offered a catalogue of movements that dared to picture freedom before they could prove it possible. He writes history as an act of replenishment for the movements of the present.",
+    offering: "Against a politics that only ever reacts, the book offers the reader permission to want everything \u2014 a catalogue of movements that dared to picture freedom before they could prove it possible.",
+    fate: "It became a touchstone for a generation organising in the present by drawing on the unfinished dreams of the past.",
+    quote: { text: "Without new visions we don't know what to build, only what to knock down.", source: "Freedom Dreams", attributed: true }
+  },
+  {
+    id: "mbembe",
+    name: "Achille Mbembe",
+    life: "b. 1957",
+    origin: "Cameroon",
+    role: "Philosopher",
+    work: { title: "Necropolitics", year: 2003 },
+    accent: "#7A1020",
+    thesis: "Beyond the power to govern life lies a deeper power: to decide who may live and who must be left to die.",
+    bio: "Born in Cameroon in 1957, Mbembe took his doctorate in history at the Sorbonne and a further degree in political science, and became one of the most influential theorists of the postcolonial condition. Now based in Johannesburg at the Wits Institute for Social and Economic Research, he writes from Africa for the world. In On the Postcolony he dissected the grotesque intimacies of power in the postcolonial state; in his essay Necropolitics he extended Michel Foucault's idea of biopower to its terminal point and named what he found \u2014 the political administration of death, the manufacture of zones where killing is permitted. His Critique of Black Reason traced the long invention of \u201cblackness\u201d as a category of capital. His vocabulary \u2014 occupation, camp, blockade and drone read as instruments of a sovereignty defined by death \u2014 has become one of the most cited in contemporary thought.",
+    offering: "The reader is given a vocabulary for the present: occupation, camp, blockade and drone read as instruments of a sovereignty defined by the distribution of death rather than the protection of life.",
+    fate: "His framework has become one of the most cited in contemporary theory; it is now routinely invoked to describe the deadliest conflicts of our own moment.",
+    quote: { text: "The ultimate expression of sovereignty resides in the power and the capacity to dictate who may live and who must die.", source: "Necropolitics", attributed: true }
+  },
+  {
+    id: "davis-angela",
+    name: "Angela Davis",
+    life: "b. 1944",
+    origin: "United States",
+    role: "Scholar & Activist",
+    work: { title: "Are Prisons Obsolete?", year: 2003 },
+    accent: "#C8102E",
+    thesis: "The prison is not the successor to slavery but its continuation \u2014 the same system, wearing the language of crime.",
+    bio: "Born in 1944 in Birmingham, Alabama, on a street so frequently attacked by white supremacists it was nicknamed \u201cDynamite Hill,\u201d Davis studied philosophy under Herbert Marcuse and pursued doctoral work in Frankfurt and California. A communist and ally of the Black Panthers, she was fired from her UCLA post on Governor Ronald Reagan's insistence. In 1970 she was charged in connection with a courtroom shootout, placed on the FBI's Most Wanted list, jailed, and \u2014 after a worldwide \u201cFree Angela\u201d campaign \u2014 acquitted in 1972. She followed a single thread in the Thirteenth Amendment, which abolished slavery \u201cexcept as a punishment for crime,\u201d to its logical and damning conclusion. She turned prison abolition from a fringe word into a serious political horizon, and remains one of the most consequential living radicals in the United States.",
+    offering: "The reader is asked to treat the prison not as a permanent feature of reality but as a historical institution that was built, can be questioned, and could be dismantled \u2014 and to imagine what would replace it.",
+    fate: "She turned abolition from a fringe word into a serious political horizon, and remains, into her eighties, one of the most consequential living radicals in the United States.",
+    quote: { text: "The Thirteenth Amendment abolished slavery \u2014 except as a punishment for crime. She followed that exception.", source: "Are Prisons Obsolete?", attributed: false }
+  },
+  {
+    id: "patnaik",
+    name: "Utsa Patnaik",
+    life: "b. 1933",
+    origin: "India",
+    role: "Economist",
+    work: { title: "The Long Drain", year: 2018, also: "and other papers" },
+    accent: "#1A5276",
+    thesis: "Britain did not develop India. It drained it \u2014 and she did the arithmetic: roughly forty-five trillion dollars.",
+    bio: "Born in 1933, Patnaik became one of India's most rigorous Marxist economists and a professor emerita at Jawaharlal Nehru University in Delhi. Across decades of work on the agrarian question \u2014 land, peasants, food security, and the legacies of empire \u2014 she brought the discipline of the account ledger to claims that others had left as rhetoric. She performed the actual accounting of the colonial \u201cdrain\u201d: the taxes, the trade trickery, and the unpaid surplus by which Britain extracted India's wealth, reducing two centuries of it to a single, staggering figure. With the economist Prabhat Patnaik she also reworked the theory of imperialism for the present. She hands the reader a number where there used to be only vague guilt \u2014 and a method for seeing colonial wealth as the debt it actually is.",
+    offering: "The reader is handed a number where there used to be vague guilt: a rigorous estimate of what was taken, and a method for seeing colonial wealth as the debt it actually is.",
+    fate: "Work that should be front-page news remains largely confined to specialist circles \u2014 the figure too large, perhaps, to be allowed to circulate.",
+    quote: { text: "Roughly $45 trillion was drained from India between 1765 and 1938 \u2014 the arithmetic of empire.", source: "on the colonial drain", attributed: false }
+  }
+];
