@@ -1,7 +1,7 @@
 /* app.jsx — root: view switching (Records / Timeline), profile state, ink-sweep transitions */
 
 function TopNav({ view, onView, solid }) {
-  const tabs = [["records", "The Records"], ["timeline", "The Timeline"], ["tracing", "Tracing Back"], ["machine", "The Machine"]];
+  const tabs = [["records", "The Records"], ["timeline", "The Timeline"], ["tracing", "Tracing Back"], ["machine", "The Machine"], ["neocolonial", "The New Machinery"]];
   return (
     <nav className={"topnav" + (solid ? " solid" : "")}>
       <button className="tn-brand" onClick={() => onView("records")}>
@@ -77,9 +77,11 @@ function App() {
           ? <Tracing onOpenRecord={openRecordById} />
           : view === "machine"
             ? <Machine onOpenRecord={openRecordById} />
-            : openIdx === null
-              ? <Gallery thinkers={thinkers} onOpen={open} />
-              : <Profile thinker={thinkers[openIdx]} index={openIdx} total={thinkers.length} onClose={close} onNav={nav} />}
+            : view === "neocolonial"
+              ? <NewMachinery onOpenRecord={openRecordById} />
+              : openIdx === null
+                ? <Gallery thinkers={thinkers} onOpen={open} />
+                : <Profile thinker={thinkers[openIdx]} index={openIdx} total={thinkers.length} onClose={close} onNav={nav} />}
 
       <div className={"sweep" + (sweep ? " on" : "")} style={{ background: sweep || "#18130a" }} aria-hidden="true">
         <span className="sweep-mark">L.B.Sys</span>

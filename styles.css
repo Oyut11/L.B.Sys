@@ -935,6 +935,262 @@ body::before {
   margin-top: 16px;
 }
 
+/* ============================================================
+   NEOCOLONIAL VIEW — The New Machinery
+   ============================================================ */
+
+.neocolonial-view {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(24px, 6vw, 90px);
+  position: relative;
+  z-index: 2;
+}
+
+.neo-mast {
+  text-align: center;
+  margin-bottom: clamp(60px, 12vw, 120px);
+  padding-top: clamp(40px, 8vw, 80px);
+}
+.neo-kicker {
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+}
+.neo-title {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+.neo-lede {
+  font-size: clamp(18px, 2.2vw, 24px);
+  line-height: 1.5;
+  max-width: 48ch;
+  margin: 0 auto;
+  color: var(--ink-soft);
+}
+
+/* Arm Index */
+.arm-index {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: clamp(60px, 12vw, 120px);
+}
+.arm-block {
+  border: 2px solid var(--ink);
+  padding: 24px;
+  background: var(--paper);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.arm-block:hover {
+  background: rgba(24,19,10,0.06);
+  border-color: var(--accent);
+}
+.arm-num {
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.arm-name {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 700;
+  font-size: 20px;
+}
+.arm-shorthand {
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.arm-intro {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-faint);
+  margin-top: 4px;
+}
+
+/* Mechanism Entries */
+.mechanism {
+  margin-bottom: clamp(80px, 15vw, 160px);
+  position: relative;
+}
+.mech-head {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 48px;
+  align-items: flex-start;
+}
+.mech-spine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.mech-node {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--ink);
+}
+.mech-arm {
+  font-family: "Courier Prime", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+.mech-seq {
+  font-family: "Courier Prime", monospace;
+  font-size: 11px;
+  opacity: 0.7;
+}
+.mech-title-block {
+  flex: 1;
+}
+.mech-name {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(32px, 4.5vw, 56px);
+  line-height: 0.95;
+  margin-bottom: 12px;
+  color: var(--accent);
+}
+.mech-oneliner {
+  font-style: italic;
+  font-size: clamp(16px, 2vw, 22px);
+  color: var(--ink-soft);
+  max-width: 52ch;
+}
+
+/* Mechanism Quote */
+.mech-quote {
+  margin-bottom: 48px;
+  padding: 32px;
+  background: var(--paper-2);
+  border-left: 4px solid var(--accent);
+}
+.mq-text {
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: clamp(18px, 2.6vw, 24px);
+  line-height: 1.4;
+  font-style: italic;
+  margin: 0;
+}
+.mq-source {
+  display: block;
+  font-family: "Courier Prime", monospace;
+  font-size: 13px;
+  font-style: normal;
+  color: var(--ink-soft);
+  margin-top: 16px;
+}
+
+/* Mechanism Grid */
+.mech-grid {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+.mech-field {
+  border: 2px solid var(--ink);
+  padding: 24px;
+}
+.mf-label {
+  font-family: "Courier Prime", monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mf-num {
+  background: var(--accent);
+  color: var(--paper);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+.mf-body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Diagnosed Chips */
+.neo-diagnosed {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.neo-diagnosed-lead {
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+}
+.neo-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.neo-chip {
+  background: var(--lk);
+  color: var(--paper);
+  border: none;
+  padding: 6px 14px;
+  font-family: "Courier Prime", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition: background 0.3s var(--ease);
+}
+.neo-chip:hover { background: var(--ink); }
+
+/* Neo Coda */
+.neo-coda {
+  text-align: center;
+  padding: clamp(60px, 12vw, 120px) 0;
+  font-family: "Bodoni Moda", Georgia, serif;
+  font-size: clamp(20px, 3vw, 32px);
+  line-height: 1.4;
+}
+.neo-coda-sub {
+  font-size: clamp(16px, 2.2vw, 20px);
+  color: var(--ink-soft);
+  margin-top: 16px;
+}
+
+/* Responsive arm index */
+@media (max-width: 900px) {
+  .arm-index { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .arm-index { grid-template-columns: 1fr; }
+}
+
 /* reduce motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
